@@ -139,10 +139,10 @@ namespace HairSalon.Models {
             var cmd = conn.CreateCommand () as MySqlCommand;
             cmd.CommandText = @"DELETE FROM stylists WHERE id = @id;";
 
-            MySqlParameter CuisineId = new MySqlParameter ();
-            CuisineId.ParameterName = "@id";
-            CuisineId.Value = id;
-            cmd.Parameters.Add (CuisineId);
+            MySqlParameter StylistId = new MySqlParameter ();
+            StylistId.ParameterName = "@id";
+            StylistId.Value = id;
+            cmd.Parameters.Add (StylistId);
 
             cmd.ExecuteNonQuery ();
             conn.Close ();

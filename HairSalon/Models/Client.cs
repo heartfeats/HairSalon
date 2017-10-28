@@ -21,7 +21,7 @@ namespace HairSalon.Models {
                 Client newClient = (Client) otherClient;
                 bool idEquality = this.GetId () == newClient.GetId ();
                 bool nameEquality = this.GetName () == newClient.GetName ();
-                bool stylistEquality = this.GetstylistId () == newClient.GetstylistId ();
+                bool stylistEquality = this.GetStylistId () == newClient.GetStylistId ();
                 return (idEquality && nameEquality && stylistEquality);
             }
         }
@@ -35,7 +35,7 @@ namespace HairSalon.Models {
         public int GetId () {
             return _id;
         }
-        public int GetstylistId () {
+        public int GetStylistId () {
             return _stylistId;
         }
 
@@ -131,10 +131,10 @@ namespace HairSalon.Models {
             var cmd = conn.CreateCommand () as MySqlCommand;
             cmd.CommandText = @"DELETE FROM clients WHERE stylist_id = @id;";
 
-            MySqlParameter cuisineId = new MySqlParameter ();
-            cuisineId.ParameterName = "@id";
-            cuisineId.Value = id;
-            cmd.Parameters.Add (cuisineId);
+            MySqlParameter clientId = new MySqlParameter ();
+            clientId.ParameterName = "@id";
+            clientId.Value = id;
+            cmd.Parameters.Add (clientId);
 
             cmd.ExecuteNonQuery ();
             conn.Close ();
@@ -143,46 +143,7 @@ namespace HairSalon.Models {
             }
         }
 
-        public static List<Client> GetAlphaList () {
-            List<Client> allClients = new List<Client> { };
-            MySqlConnection conn = DB.Connection ();
-            conn.Open ();
-            var cmd = conn.CreateCommand () as MySqlCommand;
-            cmd.CommandText = @"SELECT * FROM clients ORDER BY name;";
-            var rdr = cmd.ExecuteReader () as MySqlDataReader;
-            while (rdr.Read ()) {
-                int clientId = rdr.GetInt32 (0);
-                string clientname = rdr.GetString (1);
-                int clientstylistId = rdr.GetInt32 (2);
-                Client newClient = new Client (clientname, clientstylistId, clientId);
-                allClients.Add (newClient);
-            }
-            conn.Close ();
-            if (conn != null) {
-                conn.Dispose ();
-            }
-            return allClients;
-        }
-
-        public static void UpdateClient (int id) {
-            MySqlConnection conn = DB.Connection ();
-            conn.Open ();
-            var cmd = conn.CreateCommand () as MySqlCommand;
-            cmd.CommandText = @"UPDATE FROM clients WHERE cuisine_id = @id;";
-
-            MySqlParameter cuisineId = new MySqlParameter ();
-            cuisineId.ParameterName = "@id";
-            cuisineId.Value = id;
-            cmd.Parameters.Add (cuisineId);
-
-            cmd.ExecuteNonQuery ();
-            conn.Close ();
-            if (conn != null) {
-                conn.Dispose ();
-            }
-        }
-
-        public void UpdateClientName (string newClientName) {
+        public void UpdateClient (string newClientName) {
             MySqlConnection conn = DB.Connection ();
             conn.Open ();
             var cmd = conn.CreateCommand () as MySqlCommand;
